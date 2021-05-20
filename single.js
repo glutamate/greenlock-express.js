@@ -20,7 +20,7 @@ Single.create = function(opts) {
             //fn(master);
             return single;
         },
-        serve: function(fn) {
+        serve: function(fn, modifier) {
             // keeping backwards compat
             if (1 === fn.length) {
                 single.ready(fn);
@@ -28,7 +28,7 @@ Single.create = function(opts) {
             }
             // serving the app, right away
             single.ready(function(glx) {
-                glx.serveApp(fn);
+                glx.serveApp(fn, modifier);
             });
         }
     };

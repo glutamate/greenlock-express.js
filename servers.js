@@ -88,12 +88,7 @@ Servers.create = function(greenlock) {
         return (cluster.isWorker && cluster.worker.id) || "0";
     };
 
-    servers.withServers = function(fn) {
-        fn({_httpServer,_httpsServer})
-        return servers;
-    };
-
-    servers.serveApp = function(app) {
+    servers.serveApp = function(app, modifier) {
         return new Promise(function(resolve, reject) {
             if ("function" !== typeof app) {
                 reject(
@@ -121,6 +116,9 @@ Servers.create = function(greenlock) {
                 var secureServer = servers.httpsServer(null, app);
                 var secureAddr = "0.0.0.0";
                 var securePort = 443;
+                if(typeof modifier==="function") {
+                    modifier({ plainServer, secureServer })
+                }
                 secureServer.listen(securePort, secureAddr, function() {
                     console.info(idstr + "Listening on", secureAddr + ":" + securePort, "for secure traffic");
 
