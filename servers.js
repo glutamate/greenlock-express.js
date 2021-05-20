@@ -87,6 +87,12 @@ Servers.create = function(greenlock) {
     servers.id = function() {
         return (cluster.isWorker && cluster.worker.id) || "0";
     };
+
+    servers.withServers = function(fn) {
+        fn({_httpServer,_httpsServer})
+        return servers;
+    };
+
     servers.serveApp = function(app) {
         return new Promise(function(resolve, reject) {
             if ("function" !== typeof app) {
